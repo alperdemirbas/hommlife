@@ -21,7 +21,7 @@ class CampaignPeriodProductRepository implements CampaignPeriodProductRepository
 
     public function getProductById(int $id)
     {
-        return $this->model->with(['products','period'])->findOrFail($id);
+        return $this->model->with(['product','period'])->findOrFail($id);
     }
 
     public function createProduct(array $data)
