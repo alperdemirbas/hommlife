@@ -47,10 +47,10 @@ class Campaign extends Controller
         return redirect()->route('admin.campaigns.index')->with('success', 'Kampanya başarıyla eklendi.');
     }
 
-    public function edit($id): View|Factory|Application
+    public function edit(int $id)
     {
-        $campaign = $this->campaignRepository->getCampaignById($id);
-        return view('admin.campaigns.edit', compact('campaign'));
+        $this->data['campaign'] = $this->campaignRepository->getCampaignById($id);
+        return view('admin.campaigns.edit', $this->data);
     }
 
     public function update(Request $request, $id): RedirectResponse

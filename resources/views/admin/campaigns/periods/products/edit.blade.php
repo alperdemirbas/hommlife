@@ -1,11 +1,8 @@
-@extends('layouts.app')
-
-@section('content')
     <h1>Dönem Ürününü Düzenle</h1>
 
     <form action="{{ route('admin.campaigns.periods.products.update', $product->id) }}" method="POST">
         @csrf
-        @method('PUT')
+        @method('PATCH')
 
         <label for="period_id">Dönem</label>
         <input type="number" name="period_id" value="{{ $product->period_id }}" required>
@@ -15,4 +12,3 @@
 
         <button type="submit" class="btn btn-success">Güncelle</button>
     </form>
-@endsection

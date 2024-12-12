@@ -48,7 +48,7 @@ class CampaignPeriodProduct extends Controller
         return view('admin.campaigns.periods.products.edit', $this->data);
     }
 
-    public function update(Request $request, int $id): RedirectResponse
+    public function update(Request $request, $id): RedirectResponse
     {
         $request->validate([
             'period_id' => 'required|exists:campaign_periods,id',
