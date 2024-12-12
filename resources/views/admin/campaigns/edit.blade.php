@@ -1,10 +1,8 @@
-@extends('layouts.app')
-
 <h1>Kampanya Düzenle</h1>
 
 <form action="{{ route('admin.campaign.update', $campaign->id) }}" method="POST">
     @csrf
-    @method('PUT')
+    @method('PATCH')
 
     <label for="name">Kampanya Adı</label>
     <input type="text" name="name" value="{{ $campaign->name }}" required>
