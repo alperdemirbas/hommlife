@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\Admin\Campaign as CampaignController;
+use App\Http\Controllers\Admin\CampaignPeriod;
+use App\Http\Controllers\Admin\CampaignPeriodProduct;
 use App\Http\Controllers\Admin\Products as AdminProductsController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
 use App\Http\Controllers\User\Products;
 use App\Http\Controllers\User\ProfileController as UserProfileController;
-
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -29,6 +31,41 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
         Route::patch('/update', [AdminProductsController::class,'update'])->name('admin.products.update');
         Route::delete('/destroy/{id}', [AdminProductsController::class,'destroy'])->name('admin.products.destroy');
     });
+
+
+    # Kampanyalar
+    Route::prefix('/campaigns')->group(function () {
+        Route::get('/',[CampaignController::class,'index'])->name('admin.campaigns.index');
+        Route::get('/create',[CampaignController::class,'create'])->name('admin.campaign.create');
+        Route::post('/store',[CampaignController::class,'store'])->name('admin.campaign.store');
+        Route::get('/edit',[CampaignController::class,'edit'])->name('admin.campaign.edit');
+        Route::patch('/update',[CampaignController::class,'update'])->name('admin.campaign.update');
+        Route::delete('/destroy/{id}',[CampaignController::class,'destroy'])->name('admin.campaign.destroy');
+
+        #Kampanya Periodları
+        Route::prefix('/periods')->group(function () {
+            Route::get('/',[CampaignPeriod::class,'index'])->name('admin.campaigns.periods.index');
+            Route::get('/create',[CampaignPeriod::class,'create'])->name('admin.campaigns.periods.create');
+            Route::post('/store',[CampaignPeriod::class,'store'])->name('admin.campaigns.periods.store');
+            Route::get('/edit',[CampaignPeriod::class,'edit'])->name('admin.campaigns.periods.edit');
+            Route::patch('/update',[CampaignPeriod::class,'update'])->name('admin.campaigns.periods.update');
+            Route::delete('/destroy/{id}',[CampaignPeriod::class,'destroy'])->name('admin.campaigns.periods.destroy');
+
+            # Periolara bağlı ürünler
+            Route::prefix('/products')->group(function () {
+                Route::get('/',[CampaignPeriodProduct::class,'index'])->name('admin.campaigns.periods.products.index');
+                Route::get('/create',[CampaignPeriodProduct::class,'create'])->name('admin.campaigns.periods.products.create');
+                Route::post('/store',[CampaignPeriodProduct::class,'store'])->name('admin.campaigns.periods.products.store');
+                Route::get('/edit',[CampaignPeriodProduct::class,'edit'])->name('admin.campaigns.periods.products.edit');
+                Route::patch('/update',[CampaignPeriodProduct::class,'update'])->name('admin.campaigns.periods.products.update');
+                Route::delete('/destroy/{id}',[CampaignPeriodProduct::class,'destroy'])->name('admin.campaigns.periods.products.destroy');
+            });
+        });
+    });
+
+
+
+
 
 });
 

@@ -2,6 +2,12 @@
 
 namespace App\Providers;
 
+use App\Repositories\CampaignPeriodProductRepository;
+use App\Repositories\CampaignPeriodProductRepositoryInterface;
+use App\Repositories\CampaignPeriodRepository;
+use App\Repositories\CampaignPeriodRepositoryInterface;
+use App\Repositories\CampaignRepository;
+use App\Repositories\CampaignRepositoryInterface;
 use App\Repositories\ProductRepository;
 use App\Repositories\ProductRepositoryInterface;
 use Illuminate\Support\Facades\Blade;
@@ -15,6 +21,9 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
+        $this->app->bind(CampaignRepositoryInterface::class, CampaignRepository::class);
+        $this->app->bind(CampaignPeriodRepositoryInterface::class, CampaignPeriodRepository::class);
+        $this->app->bind(CampaignPeriodProductRepositoryInterface::class, CampaignPeriodProductRepository::class);
     }
 
     /**
