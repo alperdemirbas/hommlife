@@ -3,5 +3,5 @@
 @elseuser
 @include('user.layouts.app')
 @else
-    @include('layouts.app')
+    @include('user.layouts.app')
 @endadmin

@@ -14,6 +14,9 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            backgroundImage:{
+                'error-image': "url('https://demofree.sirv.com/nope-not-here.jpg')", // Varsayılan resim yolunu buraya girin
+            }
         },
     },
 
