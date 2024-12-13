@@ -17,7 +17,10 @@ class CampaignPeriod extends Model
         'min_price'
     ];
 
-    protected array $dates = ['start_date', 'end_date'];
+    protected $casts = [
+        'start_date' => 'datetime:Y-m-d H:i:s',
+        'end_date' => 'datetime:Y-m-d H:i:s',
+    ];
 
     public function campaign(): BelongsTo
     {

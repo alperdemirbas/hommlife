@@ -5,6 +5,8 @@ use App\Http\Controllers\Admin\CampaignPeriod;
 use App\Http\Controllers\Admin\CampaignPeriodProduct;
 use App\Http\Controllers\Admin\Products as AdminProductsController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
+use App\Http\Controllers\User\Cart;
+use App\Http\Controllers\User\Order;
 use App\Http\Controllers\User\Products;
 use App\Http\Controllers\User\ProfileController as UserProfileController;
 use Illuminate\Support\Facades\Route;
@@ -38,7 +40,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
         Route::get('/',[CampaignController::class,'index'])->name('admin.campaigns.index');
         Route::get('/create',[CampaignController::class,'create'])->name('admin.campaign.create');
         Route::post('/store',[CampaignController::class,'store'])->name('admin.campaign.store');
-        Route::get('/edit/{id}',[CampaignController::class,'edit'])->name('admin.campaigns.edit');
+        Route::get('/edit/{id}',[CampaignController::class,'edit'])->name('admin.campaign.edit');
         Route::patch('/update/{id}',[CampaignController::class,'update'])->name('admin.campaign.update');
         Route::delete('/destroy/{id}',[CampaignController::class,'destroy'])->name('admin.campaign.destroy');
 
@@ -62,11 +64,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
             });
         });
     });
-
-
-
-
-
 });
 
 Route::prefix('/')->group(function () {
@@ -79,13 +76,14 @@ Route::prefix('/')->group(function () {
         Route::patch('/profile', [UserProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [UserProfileController::class, 'destroy'])->name('profile.destroy');
     });
-
     # Ürünler
     Route::group(['middleware' => ['web']], function () {
         Route::get('products', [Products::class, 'index'])->name('product.index');
         Route::get('products/{id}', [Products::class, 'get'])->name('product.get');
     });
 
+    Route::resource('carts', Cart::class)->middleware(['web']);
+    Route::resource('orders', Order::class)->middleware(['web']);
 });
 
 
