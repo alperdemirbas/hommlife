@@ -24,6 +24,7 @@ class CartRepository implements CartRepositoryInterface
 
     public function create(array $fields)
     {
+
         return $this->model->newQuery()
             ->create($fields);
     }
