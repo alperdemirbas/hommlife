@@ -8,6 +8,7 @@ use App\Repositories\CampaignPeriodRepositoryInterface;
 use App\Repositories\CampaignRepositoryInterface;
 use App\Repositories\CartRepositoryInterface;
 use App\Repositories\OrderRepositoryInterface;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class Cart extends Controller
@@ -31,7 +32,7 @@ class Cart extends Controller
         });
         $checkGift = $cart->checkGift($userId);
         if($campaign) {
-            $period = $campaignPeriods->getBetweenDates($campaign->id, $createdAt);
+            $period = $campaignPeriods->getBetweenDates($campaign->id, Carbon::now());
             if($period) {
                 $getOrder = $order->getBetweenDates($userId, $period->start_date, $period->end_date);
                 $product = $campaignPeriodProducts->getProductById($campaign->id);
