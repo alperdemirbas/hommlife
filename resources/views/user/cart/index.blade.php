@@ -1,206 +1,119 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sepetim</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Sepet Detayı ') }}
+        </h2>
+    </x-slot>
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
-        }
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            <div class="bg-gray-50 p-4 border rounded-lg shadow-lg">
+                <table class="border-collapse table-auto w-full text-sm">
+                    <thead>
+                    <th class="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-start">
+                        Ürün Resmi
+                    </th>
+                    <th class="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-start">
+                        Ürün Adı
+                    </th>
+                    <th class="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-start">
+                        Ürün Fiyatı
+                    </th>
+                    <th class="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-start">
+                        Ürün Adedi
+                    </th>
+                    <th class="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-start">
+                        Toplam
+                    </th>
+                    <th class="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-start">
+                        İşlem
+                    </th>
+                    </thead>
+                    <tbody class="bg-white dark:bg-slate-800">
+                    @foreach($data as $item)
+                        <tr>
+                            <td class="product-image  border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
+                                <img src="https://via.placeholder.com/60" alt="Ürün Resmi"></td>
+                            <td class="product-name border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
+                                {{ $item->product->name }}
+                            </td>
 
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 50px auto;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-        }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+                            @if($item->is_gift)
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
+                                <td class="product-name border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
+                                    0.00
+                                </td>
+                                <td class="product-name border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
+                                    1
+                                </td>
+                                <td class="product-name border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
+                                    0.00
+                                </td>
+                                <td class="product-name border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
+                                    Hedyie
+                                </td>
+                            @else
+                                <td class="product-name border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
+                                    {{ $item->product->price }} ₺
+                                </td>
+                                <td class="product-name border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
+                                    <div class="quantity-buttons">
+                                        <form class="quantityUpdate" method="POST"
+                                              action="{{ route('carts.update', ['cart' => $item->id]) }}">
+                                            @method('PUT')
+                                            @csrf
 
-        th, td {
-            padding: 15px;
-            text-align: center;
-        }
 
-        th {
-            background-color: #333;
-            color: #fff;
-        }
+                                            <x-button type="button" class="decrement px-2">-</x-button>
 
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
+                                            <input type="number" class="quantity border border-transparent"
+                                                   style="width:50px;" readonly name="quantity"
+                                                   value="{{ $item->quantity }}"
+                                                   min="1">
+                                            <x-button type="button" class="increment">+</x-button>
 
-        .product-name {
-            text-align: left;
-        }
 
-        .product-image img {
-            width: 60px;
-            height: 60px;
-            border-radius: 5px;
-            object-fit: cover;
-        }
+                                        </form>
+                                    </div>
+                                </td>
+                                <td class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
+                                    {{ $item->product->price * $item->quantity }} ₺
+                                </td>
+                                <td class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
+                                    <form method="POST" action="{{ route('carts.destroy', ['cart' => $item->id]) }}">
+                                        @method('DELETE')
+                                        @csrf
 
-        .quantity-buttons {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+                                        <x-button type="submit">Sil</x-button>
+                                    </form>
+                                </td>
+                            @endif
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
 
-        .quantity-buttons button {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            padding: 8px 12px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
 
-        .quantity-buttons button:hover {
-            background-color: #0056b3;
-        }
+                <div class="text-right">
+                    <div class="bg-dark total-price mt-4">
+                        Toplam: {{ $total }} ₺
+                    </div>
 
-        .quantity-buttons input {
-            width: 40px;
-            text-align: center;
-            margin: 0 5px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            height: 35px;
-        }
+                    <form method="POST" action="{{ route('orders.store') }}">
+                        @csrf
+                        <x-button type="submit">Ödeme Yap</x-button>
+                    </form>
+                </div>
 
-        .btn-delete {
-            background-color: #ff4d4d;
-            color: #fff;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .btn-delete:hover {
-            background-color: #cc0000;
-        }
-
-        .total-price {
-            font-size: 18px;
-            text-align: right;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        .btn-checkout {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            background-color: #28a745;
-            color: #fff;
-            text-align: center;
-            border: none;
-            border-radius: 5px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .btn-checkout:hover {
-            background-color: #218838;
-        }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <h1>Sepetim</h1>
-
-    <!-- Sepet tablosu -->
-    <table>
-        <thead>
-        <tr>
-            <th>Ürün Resmi</th>
-            <th>Ürün Adı</th>
-            <th>Fiyat</th>
-            <th>Adet</th>
-            <th>Toplam</th>
-            <th>İşlemler</th>
-        </tr>
-        </thead>
-        <tbody>
-            @foreach($data as $item)
-                <tr>
-                    <td class="product-image"><img src="https://via.placeholder.com/60" alt="Ürün Resmi"></td>
-                    <td class="product-name">{{ $item->product->name }}</td>
-                    @if($item->is_gift)
-                        <td>0.00 ₺</td>
-                        <td>1</td>
-                        <td>0.00 ₺</td>
-                        <td></td>
-                    @else
-                        <td>{{ $item->product->price }} ₺</td>
-                        <td>
-                            <div class="quantity-buttons">
-                                <form class="quantityUpdate" method="POST" action="{{ route('carts.update', ['cart' => $item->id]) }}">
-                                    @method('PUT')
-                                    @csrf
-                                    <button type="button" class="decrement">-</button>
-                                    <input type="number" class="quantity" name="quantity" value="{{ $item->quantity }}" min="1">
-                                    <button type="button" class="increment">+</button>
-                                </form>
-                            </div>
-                        </td>
-                        <td>{{ $item->product->price * $item->quantity }} ₺</td>
-                        <td>
-                            <form method="POST" action="{{ route('carts.destroy', ['cart' => $item->id]) }}">
-                                @method('DELETE')
-                                @csrf
-                                <button type="submit" class="btn-delete">Sil</button>
-                            </form>
-                        </td>
-                    @endif
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-
-    <!-- Toplam fiyat ve ödeme butonu -->
-    <div class="total-price">
-        Toplam: {{ $total }} ₺
+            </div>
+        </div>
     </div>
 
-    <form method="POST" action="{{ route('orders.store') }}">
-        @csrf
-        <button type="submit" class="btn-checkout">Ödeme Yap</button>
-    </form>
-</div>
+</x-app-layout>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const decrementButtons = document.querySelectorAll('.decrement');
         const incrementButtons = document.querySelectorAll('.increment');
         const quantityInputs = document.querySelectorAll('.quantity');
@@ -208,7 +121,7 @@
 
         // Azaltma butonuna tıklama olayı
         decrementButtons.forEach(button => {
-            button.addEventListener('click', function() {
+            button.addEventListener('click', function () {
                 const form = this.closest('form');
                 const input = this.nextElementSibling; // Input elemanı
                 let currentValue = parseInt(input.value);
@@ -221,7 +134,7 @@
 
         // Artırma butonuna tıklama olayı
         incrementButtons.forEach(button => {
-            button.addEventListener('click', function() {
+            button.addEventListener('click', function () {
                 const form = this.closest('form');
                 const input = this.previousElementSibling; // Input elemanı
                 let currentValue = parseInt(input.value);
@@ -232,12 +145,9 @@
 
         // Input doğrudan değiştirildiğinde minimum kontrolü
         quantityInputs.forEach(input => {
-            input.addEventListener('change', function() {
+            input.addEventListener('change', function () {
                 if (input.value < 1) input.value = 1; // Değer 1'in altına inemez
             });
         });
     });
 </script>
-
-</body>
-</html>
