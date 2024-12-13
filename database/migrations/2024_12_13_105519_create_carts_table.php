@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('campaign', function (Blueprint $table) {
+        Schema::create('carts', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->comment("Kampanya Adı");
-            $table->timestamp("start_date")->comment("Kampanya Tarihi");
-            $table->timestamp("end_date")->comment("Kampanya Tarihi");
-            $table->string("description")->comment("Kampamya Açklaması");
+            $table->foreignIdFor(\App\Models\User::class);
+            $table->foreignIdFor(\App\Models\Product::class);
+            $table->integer('quantity');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('campaign');
+        Schema::dropIfExists('carts');
     }
 };

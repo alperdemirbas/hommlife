@@ -14,9 +14,9 @@ return new class extends Migration {
             $table->id();
             $table->string('name')->comment("Dönem Adı Örnek : Ocak Dönemi, Şubat Dönemi");
             $table->unsignedBigInteger('campaign_id')->comment("Kampanya ID");
-            $table->date('start_date')->comment("Başlangıç Tarihi : 1 Ocak");
-            $table->date("end_date")->comment("Bitiş Tarihi 31 Ocak");
-            $table->decimal('min_price', 2, 10)->comment("Minimum Sepet Tutarı");
+            $table->timestamp('start_date')->comment("Başlangıç Tarihi : 1 Ocak");
+            $table->timestamp("end_date")->comment("Bitiş Tarihi 31 Ocak");
+            $table->float('min_price', 2, 10)->comment("Minimum Sepet Tutarı");
             $table->foreign('campaign_id')->references('id')->on('campaign')->onDelete('cascade');
             $table->timestamps();
         });

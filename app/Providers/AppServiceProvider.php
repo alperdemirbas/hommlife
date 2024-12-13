@@ -8,6 +8,10 @@ use App\Repositories\CampaignPeriodRepository;
 use App\Repositories\CampaignPeriodRepositoryInterface;
 use App\Repositories\CampaignRepository;
 use App\Repositories\CampaignRepositoryInterface;
+use App\Repositories\CartRepository;
+use App\Repositories\CartRepositoryInterface;
+use App\Repositories\OrderRepository;
+use App\Repositories\OrderRepositoryInterface;
 use App\Repositories\ProductRepository;
 use App\Repositories\ProductRepositoryInterface;
 use Illuminate\Support\Facades\Blade;
@@ -24,6 +28,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CampaignRepositoryInterface::class, CampaignRepository::class);
         $this->app->bind(CampaignPeriodRepositoryInterface::class, CampaignPeriodRepository::class);
         $this->app->bind(CampaignPeriodProductRepositoryInterface::class, CampaignPeriodProductRepository::class);
+        $this->app->bind(CartRepositoryInterface::class, CartRepository::class);
+        $this->app->bind(OrderRepositoryInterface::class, OrderRepository::class);
     }
 
     /**

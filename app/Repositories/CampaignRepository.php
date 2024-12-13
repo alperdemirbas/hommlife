@@ -19,6 +19,14 @@ class CampaignRepository implements CampaignRepositoryInterface
         return $this->model->all();
     }
 
+    public function dateBetweenCampaigns($date)
+    {
+        return $this->model->newQuery()
+            ->where('start_date' , '<=' , $date)
+            ->where('end_date' , '>=' , $date)
+            ->first();
+    }
+
     public function getCampaignById(int $id)
     {
         return $this->model->findOrFail($id);
