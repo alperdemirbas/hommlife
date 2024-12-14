@@ -12,23 +12,28 @@ use Illuminate\Http\Request;
 
 class CampaignPeriod extends Controller
 {
-    protected CampaignPeriodRepositoryInterface $campaign;
-    protected $data;
+    protected CampaignPeriodRepositoryInterface $campaign_period;
+    protected array $data;
 
-    public function __construct(CampaignPeriodRepositoryInterface $campaign)
+    public function __construct(CampaignPeriodRepositoryInterface $campaign_period)
     {
-        $this->campaign = $campaign;
+        $this->campaign_period = $campaign_period;
     }
 
     public function index(): View|Factory|Application
     {
-        $this->data['periods'] = $this->campaign->getAllPeriods();
+        $this->data['periods'] = $this->campaign_period->getAllPeriods();
+
         return view('admin.campaigns.periods.index', $this->data);
     }
 
-    public function create(): View|Factory|Application
+    public function create(Request $request): View|Factory|Application
     {
-        return view('admin.campaigns.periods.create');
+        $id = (int)$request->query('campaign_id');
+        $this->data['campaigns'] = $this->campaign_period->getCampaign($id);
+        #$this->data['campaign'] = $this->data['campaigns']->first();
+        $this->data['periods'] = $this->campaign_period->getAllPeriods();
+        return view('admin.campaigns.periods.create', $this->data);
     }
 
     public function store(Request $request): RedirectResponse
@@ -41,15 +46,15 @@ class CampaignPeriod extends Controller
             'min_price' => 'required|numeric|min:0',
         ]);
 
-        $this->campaign->createPeriod($request->all());
+        $this->campaign_period->createPeriod($request->all());
 
         return redirect()->route('admin.campaigns.periods.index')->with('success', 'Dönem başarıyla eklendi.');
     }
 
     public function edit($id): View|Factory|Application
     {
-        $period = $this->campaign->getPeriodById($id);
-        return view('admin.campaigns.periods.edit', compact('period'));
+        $this->data['period'] = $this->campaign_period->getPeriodById($id);
+        return view('admin.campaigns.periods.edit', $this->data);
     }
 
     public function update(Request $request, $id): RedirectResponse
@@ -62,13 +67,13 @@ class CampaignPeriod extends Controller
             'min_price' => 'required|numeric|min:0',
         ]);
 
-        $this->campaign->updatePeriod($id, $request->all());
+        $this->campaign_period->updatePeriod($id, $request->all());
         return redirect()->route('admin.campaigns.periods.index')->with('success', 'Dönem başarıyla güncellendi.');
     }
 
     public function destroy($id): RedirectResponse
     {
-        $this->campaign->deletePeriod($id);
+        $this->campaign_period->deletePeriod($id);
         return redirect()->route('admin.campaigns.periods.index')->with('success', 'Dönem başarıyla silindi.');
     }
 }

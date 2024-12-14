@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Repositories\CampaignRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -24,6 +25,6 @@ class CampaignPeriod extends Model
 
     public function campaign(): BelongsTo
     {
-        return $this->belongsTo(Campaign::class,'campaign_id');
+        return $this->belongsTo(Campaign::class,'campaign_id','id');
     }
 }
