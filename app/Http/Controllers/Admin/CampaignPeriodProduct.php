@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\CampaignPeriodProductRepositoryInterface;
+use App\Repositories\CampaignPeriodRepositoryInterface;
+use App\Repositories\ProductRepositoryInterface;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
@@ -13,23 +15,31 @@ use Illuminate\Http\Request;
 class CampaignPeriodProduct extends Controller
 {
 
-    protected $data;
+    protected array $data;
     protected CampaignPeriodProductRepositoryInterface $campaign_period_product_repository;
+    protected CampaignPeriodRepositoryInterface $campaign_period_repository;
 
-    public function __construct(CampaignPeriodProductRepositoryInterface $campaignPeriodProductRepository)
+    protected ProductRepositoryInterface $product_repository;
+
+    public function __construct(CampaignPeriodProductRepositoryInterface $campaignPeriodProductRepository,
+                                CampaignPeriodRepositoryInterface        $campaign_period_repository,
+                                ProductRepositoryInterface               $product_repository)
     {
         $this->campaign_period_product_repository = $campaignPeriodProductRepository;
+        $this->campaign_period_repository = $campaign_period_repository;
+        $this->product_repository = $product_repository;
     }
 
-    public function index(): View|Factory|Application
+    public function index()
     {
-        $this->data['products'] = $this->campaign_period_product_repository->getAllProducts();
-        return view('admin.campaigns.periods.products.index', $this->data);
+        return redirect()->route('admin.campaigns.index')->with('success', 'Ürün eklendi.');
     }
 
-    public function create(): View|Factory|Application
+    public function create(Request $request): View|Factory|Application
     {
-        return view('admin.campaigns.periods.products.create');
+        $this->data['period'] = $this->campaign_period_repository->getPeriodId($request->get('period'));
+        $this->data['products'] = $this->product_repository->getAll();
+        return view('admin.campaigns.periods.products.create', $this->data);
     }
 
     public function store(Request $request): RedirectResponse
