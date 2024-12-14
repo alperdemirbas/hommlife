@@ -50,4 +50,12 @@ class CampaignPeriodRepository implements CampaignPeriodRepositoryInterface
         $period = $this->model->findOrFail($id);
         return $period->delete();
     }
+
+    public function getCampaign(int $id): Collection
+    {
+        return $this->model->newQuery()
+            ->where('id', $id)
+            ->from('campaign')
+            ->get();
+    }
 }

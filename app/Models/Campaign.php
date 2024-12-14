@@ -25,7 +25,6 @@ class Campaign extends Model
     public function periods(): HasMany
     {
         return $this->hasMany(CampaignPeriod::class, 'campaign_id', 'id');
-
     }
 
 }

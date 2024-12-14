@@ -12,5 +12,5 @@ interface CampaignPeriodRepositoryInterface
     public function createPeriod(array $data);
     public function updatePeriod(int $id, array $data);
     public function deletePeriod(int $id);
-    public function periods(CampaignPeriod $periods);
+    public function getCampaign(int $id);
 }

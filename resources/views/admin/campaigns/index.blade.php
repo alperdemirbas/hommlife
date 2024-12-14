@@ -26,23 +26,29 @@
                                         <p><b>Bitiş Tarihi : </b>{{ $campaign->end_date }}</p>
                                         <p><b>Açıklama : </b>{{ $campaign->description }}</p>
 
-
                                         <h1 class="text-lg mt-3"><b>Dönemler</b></h1>
                                         <div class="flex">
+
                                             @if($campaign->periods->isEmpty())
-                                                <p>Kampanyaya ait bir dönem girilmemiş.</p>
+                                                <p class="m-4">Kampanyaya ait bir dönem girilmemiş.</p>
                                             @else
-                                            @foreach($campaign->periods as $period)
-                                                <div class="grid border shadow-lg p-4" style="margin-right:10px;">
-                                                    <p><b>{{$period->name}}</b></p>
-                                                    <p>Başlangıç Tarihi : {{ date_format($period->start_date,'Y-m-d' )}}</p>
-                                                    <p>Bitiş Tarihi : {{ date_format($period->end_date,'Y-m-d')}}</p>
-                                                    <p>Min Tutar : {{ $period->min_price }} ₺</p>
-                                                </div>
-                                            @endforeach
+                                                @foreach($campaign->periods as $period)
+                                                    <div class="grid border shadow-lg p-4" style="margin-right:10px;">
+                                                        <p><b>{{$period->name}}</b></p>
+                                                        <p>Başlangıç Tarihi
+                                                            : {{ date_format($period->start_date,'Y-m-d' )}}</p>
+                                                        <p>Bitiş Tarihi
+                                                            : {{ date_format($period->end_date,'Y-m-d')}}</p>
+                                                        <p>Min Tutar : {{ $period->min_price }} ₺</p>
+                                                    </div>
+                                                @endforeach
                                             @endif
 
+
                                         </div>
+                                        <p>
+                                            <a href="{{ route('admin.campaigns.periods.create',['campaign_id'=>$campaign->id]) }}">
+                                                Dönem eklemek için tıklayın</a></p></p>
 
                                         <div class="flex">
                                             <a href="{{ route('admin.campaign.edit', $campaign->id) }}"
