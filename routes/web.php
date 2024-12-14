@@ -29,8 +29,8 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
         Route::get('/', [AdminProductsController::class,'index'])->name('admin.products.index');
         Route::get('/create', [AdminProductsController::class,'create'])->name('admin.products.create');
         Route::post('/store', [AdminProductsController::class,'store'])->name('admin.products.store');
-        Route::get('/edit', [AdminProductsController::class,'edit'])->name('admin.products.edit');
-        Route::patch('/update', [AdminProductsController::class,'update'])->name('admin.products.update');
+        Route::get('/edit/{id}', [AdminProductsController::class,'edit'])->name('admin.products.edit');
+        Route::patch('/update/{id}', [AdminProductsController::class,'update'])->name('admin.product.update');
         Route::delete('/destroy/{id}', [AdminProductsController::class,'destroy'])->name('admin.products.destroy');
     });
 

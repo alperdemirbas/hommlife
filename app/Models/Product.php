@@ -3,11 +3,9 @@
 namespace App\Models;
 
 use App\Http\Controllers\Products;
-use GuzzleHttp\Psr7\Request;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
@@ -38,41 +36,6 @@ class Product extends Model
         return $this->where('id', $id)->first();
     }
 
-    public function find()
-    {
-        //
-    }
-
-
-    /**
-     * @return void
-     * @description Admin Ürün Oluştur
-     */
-    public function _______store(Request $request): Product
-    {
-
-    }
-
-    /**
-     * @return void
-     * @description Admin Ürün Edit
-     */
-    public function editAdminProduct()
-    {
-
-    }
-
-    /**
-     * @return void
-     * @description Admin Ürün Güncelle
-     */
-    public function updateAdminProduct($data): void
-    {
-        $this->update($data);
-    }
-
-
-
     /**
      * @return void
      * @description Admin Ürün Sil
@@ -81,4 +44,5 @@ class Product extends Model
     {
         $this->delete();
     }
+
 }

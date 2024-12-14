@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use App\Models\CampaignPeriod;
+
 interface CampaignPeriodRepositoryInterface
 {
     public function getAllPeriods();
@@ -10,4 +12,5 @@ interface CampaignPeriodRepositoryInterface
     public function createPeriod(array $data);
     public function updatePeriod(int $id, array $data);
     public function deletePeriod(int $id);
+    public function periods(CampaignPeriod $periods);
 }

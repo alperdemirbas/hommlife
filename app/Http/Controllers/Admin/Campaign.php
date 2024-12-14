@@ -23,8 +23,6 @@ class Campaign extends Controller
     public function index(): View|Factory|Application
     {
         $this->data['campaigns'] = $this->campaignRepository->getAllCampaigns();
-
-
         return view('admin.campaigns.index', $this->data);
     }
 

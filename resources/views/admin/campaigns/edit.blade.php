@@ -1,3 +1,4 @@
+##########
 <h1>Kampanya Düzenle</h1>
 
 <form action="{{ route('admin.campaign.update', $campaign->id) }}" method="POST">
