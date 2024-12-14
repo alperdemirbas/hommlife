@@ -4,15 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\ProductRepositoryInterface;
-
-use GuzzleHttp\Psr7\Request;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class Products extends Controller
 {
-    protected $data;
+    protected array $data;
     protected ProductRepositoryInterface $productRepository;
 
     public function __construct(ProductRepositoryInterface $productRepository)
@@ -27,7 +27,7 @@ class Products extends Controller
     }
 
 
-    public function edit($id)
+    public function edit(int $id): View|Factory|Application
     {
         $this->data['product'] = $this->productRepository->findById($id);
         return view('admin.products.edit', $this->data);
@@ -44,9 +44,10 @@ class Products extends Controller
         return view('admin.products.create');
     }
 
-    public function update(Request $request, $id): void
+    public function update(Request $request, $id): RedirectResponse
     {
         $this->productRepository->update($id, $request->all());
+        return redirect()->route('admin.products.index');
     }
 
     public function destroy($id)

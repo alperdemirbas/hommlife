@@ -16,14 +16,18 @@ class CampaignRepository implements CampaignRepositoryInterface
 
     public function getAllCampaigns(): Collection
     {
-        return $this->model->all();
+        return $this->model->newQuery()
+            ->with('periods') #Dönemler Tablosunuda bağladok.
+            ->orderBy('id', 'desc')
+            ->get();
+
     }
 
     public function dateBetweenCampaigns($date)
     {
         return $this->model->newQuery()
-            ->where('start_date' , '<=' , $date)
-            ->where('end_date' , '>=' , $date)
+            ->where('start_date', '<=', $date)
+            ->where('end_date', '>=', $date)
             ->first();
     }
 
@@ -46,7 +50,6 @@ class CampaignRepository implements CampaignRepositoryInterface
 
     public function deleteCampaign(int $id)
     {
-
         $campaign = $this->model->findOrFail($id);
         return $campaign->delete();
     }

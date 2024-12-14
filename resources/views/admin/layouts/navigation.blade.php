@@ -16,8 +16,12 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('admin.products.index')">
+                    <x-nav-link :href="route('admin.products.index')" :action="request()->is('products')">
                         {{ __('Ürünler') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('admin.campaigns.index')" :action="request()->is('products')">
+                        {{ __('Kampanyalar') }}
                     </x-nav-link>
 
                 </div>
