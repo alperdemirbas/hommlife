@@ -48,7 +48,7 @@ class CampaignPeriod extends Controller
 
         $this->campaign_period->createPeriod($request->all());
 
-        return redirect()->route('admin.campaigns.periods.index')->with('success', 'Dönem başarıyla eklendi.');
+        return redirect()->route('admin.campaigns.index')->with('success', 'Dönem başarıyla eklendi.');
     }
 
     public function edit($id): View|Factory|Application
