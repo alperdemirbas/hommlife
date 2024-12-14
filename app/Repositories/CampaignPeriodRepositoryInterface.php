@@ -13,4 +13,5 @@ interface CampaignPeriodRepositoryInterface
     public function updatePeriod(int $id, array $data);
     public function deletePeriod(int $id);
     public function getCampaign(int $id);
+    public function getPeriodId(int $id);
 }

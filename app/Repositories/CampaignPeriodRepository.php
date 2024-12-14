@@ -58,4 +58,12 @@ class CampaignPeriodRepository implements CampaignPeriodRepositoryInterface
             ->from('campaign')
             ->get();
     }
+
+    public function getPeriodId(int $id): Collection
+    {
+        return $this->model->newQuery()
+            ->from('campaign_periods')
+            ->where('id', $id)
+            ->get();
+    }
 }

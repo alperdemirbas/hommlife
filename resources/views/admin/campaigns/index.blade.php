@@ -40,6 +40,7 @@
                                                         <p>Bitiş Tarihi
                                                             : {{ date_format($period->end_date,'Y-m-d')}}</p>
                                                         <p>Min Tutar : {{ $period->min_price }} ₺</p>
+                                                        <a href="{{route('admin.campaigns.periods.products.create',['campaign'=>$campaign->id,'period'=>$period->id])}}"><x-button>Ürünler</x-button></a>
                                                     </div>
                                                 @endforeach
                                             @endif
