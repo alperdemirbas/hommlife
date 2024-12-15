@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Collection;
 class CampaignPeriodProductRepository implements CampaignPeriodProductRepositoryInterface
 {
 
-    protected $model;
+    protected CampaignPeriodProducts $model;
+
     public function __construct(CampaignPeriodProducts $model)
     {
         $this->model = $model;
@@ -16,12 +17,7 @@ class CampaignPeriodProductRepository implements CampaignPeriodProductRepository
 
     public function getAllProducts(): Collection
     {
-        return $this->model->with(['period','product'])->get();
-    }
-
-    public function getProductById(int $id)
-    {
-        return $this->model->with(['product','period'])->findOrFail($id);
+        return $this->model->with(['period', 'product'])->get();
     }
 
     public function createProduct(array $data)
@@ -36,9 +32,26 @@ class CampaignPeriodProductRepository implements CampaignPeriodProductRepository
         return $product;
     }
 
+    public function getProductById(int $id)
+    {
+        $query = $this->model->newQuery()
+            ->from("campaign_period_products")
+            ->where('period_id', $id)
+            ->get();
+        return $query;
+    }
+
     public function deleteProduct(int $id)
     {
         $product = $this->getProductById($id);
         return $product->delete();
+    }
+
+    public function productBelongToPeriod($id): Collection
+    {
+        return $this->model->newQuery()
+            ->from("campaign_period_products")
+            ->where('period_id', $id)
+            ->get();
     }
 }
