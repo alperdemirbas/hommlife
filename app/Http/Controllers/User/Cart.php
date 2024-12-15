@@ -10,37 +10,41 @@ use App\Repositories\CartRepositoryInterface;
 use App\Repositories\OrderRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class Cart extends Controller
 {
-
     public function index(
-        Request $request,
-        CartRepositoryInterface $cart,
-        CampaignRepositoryInterface $campaigns,
-        CampaignPeriodRepositoryInterface $campaignPeriods,
+        Request                                  $request,
+        CartRepositoryInterface                  $cart,
+        CampaignRepositoryInterface              $campaigns,
+        CampaignPeriodRepositoryInterface        $campaignPeriods,
         CampaignPeriodProductRepositoryInterface $campaignPeriodProducts,
-        OrderRepositoryInterface $order,
+        OrderRepositoryInterface                 $order,
     )
     {
+
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
         $userId = $request->user()->id;
         $createdAt = $request->user()->created_at;
         $campaign = $campaigns->dateBetweenCampaigns($createdAt);
         $data = $cart->get($request->user()->id);
-        $total = $data->sum(function($item) {
-            return !$item->is_gift ? $item->product->price * $item->quantity: 0;
+        $total = $data->sum(function ($item) {
+            return !$item->is_gift ? $item->product->price * $item->quantity : 0;
         });
         $checkGift = $cart->checkGift($userId);
-        if($campaign) {
+        if ($campaign) {
             $period = $campaignPeriods->getBetweenDates($campaign->id, Carbon::now());
-            if($period) {
+            if ($period) {
                 $getOrder = $order->getBetweenDates($userId, $period->start_date, $period->end_date);
                 $product = $campaignPeriodProducts->getProductById($period->id);
-                if(
+                if (
                     !$getOrder &&
                     $total >= $period->min_price
                 ) {
-                    if(!$checkGift) {
+                    if (!$checkGift) {
 
                         foreach ($product as $_product):
                             #dd($_product);
@@ -52,18 +56,18 @@ class Cart extends Controller
                             ]);
                         endforeach;
                     }
-                } else if($checkGift) {
+                } else if ($checkGift) {
                     $cart->delete($checkGift->id, $userId);
                 }
             } else {
 
-                if($checkGift) {
+                if ($checkGift) {
                     $cart->delete($checkGift->id, $userId);
                 }
             }
         } else {
 
-            if($checkGift) {
+            if ($checkGift) {
                 $cart->delete($checkGift->id, $userId);
             }
         }
@@ -81,7 +85,7 @@ class Cart extends Controller
         $cart->update(
             $request->route('cart'),
             $request->user()->id,
-            ['quantity' => (int) $request->post('quantity')]
+            ['quantity' => (int)$request->post('quantity')]
         );
         return redirect()->route('carts.index');
     }
