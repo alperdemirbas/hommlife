@@ -68,7 +68,7 @@
                                             <x-button type="button" class="decrement px-2">-</x-button>
 
                                             <input type="number" class="quantity border border-transparent"
-                                                   style="width:50px;" readonly name="quantity"
+                                                   style="width:80px;" readonly name="quantity"
                                                    value="{{ $item->quantity }}"
                                                    min="1">
                                             <x-button type="button" class="increment">+</x-button>

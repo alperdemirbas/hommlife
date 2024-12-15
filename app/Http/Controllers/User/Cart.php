@@ -35,28 +35,34 @@ class Cart extends Controller
             $period = $campaignPeriods->getBetweenDates($campaign->id, Carbon::now());
             if($period) {
                 $getOrder = $order->getBetweenDates($userId, $period->start_date, $period->end_date);
-                $product = $campaignPeriodProducts->getProductById($campaign->id);
+                $product = $campaignPeriodProducts->getProductById($period->id);
                 if(
                     !$getOrder &&
                     $total >= $period->min_price
                 ) {
                     if(!$checkGift) {
-                        $cart->create([
-                            'user_id' => $userId,
-                            'product_id' => $product->product_id,
-                            'quantity' => 1,
-                            'is_gift' => true
-                        ]);
+
+                        foreach ($product as $_product):
+                            #dd($_product);
+                            $cart->create([
+                                'user_id' => $userId,
+                                'product_id' => $_product->product_id,
+                                'quantity' => 1,
+                                'is_gift' => true
+                            ]);
+                        endforeach;
                     }
                 } else if($checkGift) {
                     $cart->delete($checkGift->id, $userId);
                 }
             } else {
+
                 if($checkGift) {
                     $cart->delete($checkGift->id, $userId);
                 }
             }
         } else {
+
             if($checkGift) {
                 $cart->delete($checkGift->id, $userId);
             }
